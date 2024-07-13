@@ -1,0 +1,5 @@
+tqdm==4.66.2
+langchain==0.1.14
+langchain-community==0.0.31
+langchain-core==0.1.40
+langchain-text-splitters==0.0.1
