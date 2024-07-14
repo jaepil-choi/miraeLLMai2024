@@ -195,3 +195,5 @@ sandbox.ipynb
 ## Prevent big data files getting committed
 *.xlsx
 *.xls
+
+*_ALL.pkl
