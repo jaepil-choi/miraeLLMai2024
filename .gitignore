@@ -197,3 +197,4 @@ sandbox.ipynb
 *.xls
 
 *_ALL.pkl
+data/all_news_df_top100.pkl
