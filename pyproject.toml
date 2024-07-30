@@ -18,6 +18,7 @@ requests = "^2.32.3"
 beautifulsoup4 = "^4.12.3"
 python-dotenv = "^1.0.1"
 openpyxl = "^3.1.5"
+streamlit = "^1.37.0"
 
 
 [build-system]
