@@ -16,7 +16,7 @@ with open(DATA_PATH / 'ticker_to_name.pkl', 'rb') as f:
 with open(DATA_PATH / 'name_to_ticker.pkl', 'rb') as f:
     NAME_TO_TICKER = pickle.load(f)
 
-# TODO: hidden method에 대응하는 get method들 만들어 property를 return하도록 고치기. (w/ "is_ticker=" 옵션)
+# TODO: (refactoring) hidden method에 대응하는 get method들 만들어 property를 return하도록 고치기. (w/ "is_ticker=" 옵션)
 class Customer:
     def __init__(self, name):
         self.returns_df = RETURNS_DF
@@ -40,8 +40,10 @@ class Customer:
         self.cv_df = self._get_cv_df(is_ticker=True)
         self.current_holdings = self._get_current_holdings(is_ticker=True)
         self.investment_df = self._get_investment_df(is_ticker=True)
+        self.investments = self._get_investments()
+        self.cv = self._get_cv()
+        self.portfolio_returns = self._get_portfolio_returns()
         self.portfolio_returns_df = self._get_portfolio_returns_df(is_ticker=True)
-
     
     def _get_portfolio_universe(self, is_ticker=False): # 포트폴리오에 (한 번이라도) 포함된 종목들
         tickers = self.df.columns.tolist() 
@@ -78,6 +80,7 @@ class Customer:
             return cv_df.rename(columns=self.ticker_to_name)
     
     # TODO: 매입 평가 방식, 실현 손익 빼버려야 함. 고치기. 
+    # TODO: 일단 예시 자체를 매수/매입 반복 없애기로 했다. 매입금액 조절이 까다로워서. 
     def _get_investment_df(self, is_ticker=False): # 매입금액 (investment) ffill 
         investment_df = self.df.reindex(self.close_df.index) * self.close_df
         investment_df = investment_df.ffill()
@@ -94,8 +97,21 @@ class Customer:
             return portfolio_returns
         else:
             return portfolio_returns.rename(columns=self.ticker_to_name)
+    
+    def _get_investments(self): # 전체 매입금액
+        investment_s = self.investment_df.sum(axis=1)
 
+        return investment_s
 
+    def _get_cv(self): # 전체 현재가치
+        cv_s = self.cv_df.sum(axis=1)
+
+        return cv_s
+    
+    def _get_portfolio_returns(self): # 전체 수익률
+        portfolio_returns_s = (self._get_cv() / self._get_investments()) - 1
+
+        return portfolio_returns_s
         
 
     
