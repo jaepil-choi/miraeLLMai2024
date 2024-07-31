@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from customer import Customer
+from clovagraphrag import get_clova_response
 
 # Set up the layout
 st.set_page_config(layout="centered")
@@ -73,15 +74,49 @@ best3_2 = st.button(f'{best3[1][0]}가 왜 올랐을까?', type='primary')
 st.write(f'{best3[2][0]}: :green[+{best3[2][1]:.0f}원]')
 best3_3 = st.button(f'{best3[2][0]}가 왜 올랐을까?', type='primary')
 
-st.write(f'{0}는 왜 오른거죠? ')
+st.write('* 버튼을 누르고 답변이 생성될 때까지 잠시 기다려주세요.')
 
+if best3_1:
+    name = best3[0][0]
+    response = get_clova_response(name, date, '상승')
+    st.write(response)
+elif best3_2:
+    name = best3[1][0]
+    response = get_clova_response(name, date, '상승')
+    st.write(response)
+elif best3_3:
+    name = best3[2][0]
+    response = get_clova_response(name, date, '상승')
+    st.write(response)
 
-
-
+####################
 
 st.write('가장 많이 잃은 WORST 3 종목들')
+worst3 = daily_pnl.sort_values(ascending=True).head(3)
+worst3.index = [customer.ticker_to_name[ticker] for ticker in worst3.index]
+worst3 = [ (name, pnl) for name, pnl in worst3.to_dict().items() ]
 
-st.write(f'{0}는 왜 떨어진거죠? ')
+st.write(f'{worst3[0][0]}: :red[-{worst3[0][1]:.0f}원]')
+worst3_1 = st.button(f'{worst3[0][0]}가 왜 떨어졌을까?', type='primary')
+
+st.write(f'{worst3[1][0]}: :red[-{worst3[1][1]:.0f}원]')
+worst3_2 = st.button(f'{worst3[1][0]}가 왜 떨어졌을까?', type='primary')
+
+st.write(f'{worst3[2][0]}: :red[-{worst3[2][1]:.0f}원]')
+worst3_3 = st.button(f'{worst3[2][0]}가 왜 떨어졌을까?', type='primary')
+
+if worst3_1:
+    name = worst3[0][0]
+    response = get_clova_response(name, date, '하락')
+    st.write(response)
+elif worst3_2:
+    name = worst3[1][0]
+    response = get_clova_response(name, date, '하락')
+    st.write(response)
+elif worst3_3:
+    name = worst3[2][0]
+    response = get_clova_response(name, date, '하락')
+    st.write(response)
 
 
 
