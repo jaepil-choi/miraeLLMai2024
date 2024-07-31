@@ -44,20 +44,44 @@ st.divider()
 
 st.line_chart(customer.portfolio_returns, use_container_width=False)
 
-# Display winner stocks
+# Select Date
+date_list = customer.cv.index.strftime('%Y-%m-%d').tolist()
 
+date = st.select_slider(
+    '분석할 날짜를 선택하세요',
+    options=date_list
+)
 
 # Display text summary
-DATE = '2024-07-17'
-st.write(f'{DATE}의 내 성과 분석') # 폭락
+st.write(f'{date}의 내 성과 분석')
 
-st.write('가장 큰 손실을 일으킨 종목들')
-# 1. 한미반도체 A042700
+daily_pnl_df = customer.cv_df - customer.cv_df.shift(1)
+daily_pnl = daily_pnl_df.loc[date, :]
+
+st.write('가장 많이 벌어준 BEST 3 종목들')
+best3 = daily_pnl.sort_values(ascending=False).head(3)
+best3.index = [customer.ticker_to_name[ticker] for ticker in best3.index]
+best3 = [ (name, pnl) for name, pnl in best3.to_dict().items() ]
 
 
-# 2. SK하이닉스 A000660
+st.write(f'{best3[0][0]}: :green[+{best3[0][1]:.0f}원]')
+best3_1 = st.button(f'{best3[0][0]}가 왜 올랐을까?', type='primary')
 
-# 3. 삼성전자 A005930
+st.write(f'{best3[1][0]}: :green[+{best3[1][1]:.0f}원]')
+best3_2 = st.button(f'{best3[1][0]}가 왜 올랐을까?', type='primary')
+
+st.write(f'{best3[2][0]}: :green[+{best3[2][1]:.0f}원]')
+best3_3 = st.button(f'{best3[2][0]}가 왜 올랐을까?', type='primary')
+
+st.write(f'{0}는 왜 오른거죠? ')
+
+
+
+
+
+st.write('가장 많이 잃은 WORST 3 종목들')
+
+st.write(f'{0}는 왜 떨어진거죠? ')
 
 
 
