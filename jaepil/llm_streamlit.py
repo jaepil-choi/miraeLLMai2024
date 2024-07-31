@@ -15,6 +15,8 @@ st.divider()
 # Create customer data
 customer = Customer('김증권')
 
+st.subheader(f'{customer.name}님의 투자수익을 분석했어요.')
+
 # Define investment information
 
 investments = int(customer.investments[-1])
@@ -43,6 +45,8 @@ st.divider()
 
 # Center the plot
 
+st.subheader('내 포트폴리오의 누적수익률')
+
 st.line_chart(customer.portfolio_returns, use_container_width=False)
 
 # Select Date
@@ -59,7 +63,7 @@ st.write(f'{date}의 내 성과 분석')
 daily_pnl_df = customer.cv_df - customer.cv_df.shift(1)
 daily_pnl = daily_pnl_df.loc[date, :]
 
-st.write('가장 많이 벌어준 BEST 3 종목들')
+st.subheader('이 날 가장 많이 벌어준 BEST 3 종목들')
 best3 = daily_pnl.sort_values(ascending=False).head(3)
 best3.index = [customer.ticker_to_name[ticker] for ticker in best3.index]
 best3 = [ (name, pnl) for name, pnl in best3.to_dict().items() ]
@@ -91,18 +95,18 @@ elif best3_3:
 
 ####################
 
-st.write('가장 많이 잃은 WORST 3 종목들')
+st.subheader('이 날 가장 많이 잃은 WORST 3 종목들')
 worst3 = daily_pnl.sort_values(ascending=True).head(3)
 worst3.index = [customer.ticker_to_name[ticker] for ticker in worst3.index]
 worst3 = [ (name, pnl) for name, pnl in worst3.to_dict().items() ]
 
-st.write(f'{worst3[0][0]}: :red[-{worst3[0][1]:.0f}원]')
+st.write(f'{worst3[0][0]}: :red[{worst3[0][1]:.0f}원]')
 worst3_1 = st.button(f'{worst3[0][0]}가 왜 떨어졌을까?', type='primary')
 
-st.write(f'{worst3[1][0]}: :red[-{worst3[1][1]:.0f}원]')
+st.write(f'{worst3[1][0]}: :red[{worst3[1][1]:.0f}원]')
 worst3_2 = st.button(f'{worst3[1][0]}가 왜 떨어졌을까?', type='primary')
 
-st.write(f'{worst3[2][0]}: :red[-{worst3[2][1]:.0f}원]')
+st.write(f'{worst3[2][0]}: :red[{worst3[2][1]:.0f}원]')
 worst3_3 = st.button(f'{worst3[2][0]}가 왜 떨어졌을까?', type='primary')
 
 if worst3_1:
