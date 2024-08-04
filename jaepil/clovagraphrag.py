@@ -47,8 +47,8 @@ def get_clova_response(company_name, yyyy_mm_dd, up_or_down='상승'):
     # 1. cypher query를 활용하여 neo4j DB에서 해당 시간에 해당 기업이 어떠한 관계를 가지고 있는지를 검색.
     # 2. 검색 결과를 references에 저장.
 
-    URL = "bolt://107.21.40.126:7687"                   
-    AUTH = ("neo4j", "rust-interface-refunds")
+    URL = "bolt://3.88.181.195:7687"                   
+    AUTH = ("neo4j", "creek-legends-scratch")
 
     driver = GraphDatabase.driver(URL, auth=AUTH) 
     session = driver.session()
